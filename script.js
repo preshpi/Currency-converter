@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const convertBtn = document.querySelector("#convertBtn");
   const swapIcon = document.querySelector(".icon-arrow");
 
+  // Fetch API key from config.json
   async function fetchApiKey() {
     try {
       const response = await fetch("config.json");
       const data = await response.json();
-      console.log(data);
       return data.apiKey;
     } catch (error) {
       console.error("Error fetching API key:", error);
@@ -21,10 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchCurrencies();
 
   async function fetchCurrencies() {
+    const apiKey = await fetchApiKey();
+    if (!apiKey) return;
+
     try {
-      const apiKey = await fetchApiKey();
-      if (!apiKey) return;
-      console.log(apiKey);
       const response = await fetch(
         `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`
       );
@@ -51,11 +51,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const toCurrency = toCurrencySelect.value;
     const amount = amountInput.value;
 
+    const apiKey = await fetchApiKey();
+    if (!apiKey) return;
+
     try {
       const response = await fetch(
-        `https://v6.exchangerate-api.com/v6/ca920de8040e808da68288cf/latest/${fromCurrency}`
+        `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${fromCurrency}`
       );
       const data = await response.json();
+      console.log(data);
 
       // Check if the response contains data for the selected currencies
       if (data.conversion_rates[toCurrency]) {
