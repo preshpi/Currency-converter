@@ -84,6 +84,7 @@ select {
   padding: 5px;
   border-radius: 5px;
   outline: none;
+  border: 1px solid black;
   background: none;
 }
 
